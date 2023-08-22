@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 from objloader_simple import *
 from collections import deque
 import pyrealsense2 as rs
+import src.project_and_display as proj
+
 
 class RealSenseCapture:
     """RealSense Camera Capture
@@ -222,7 +224,12 @@ def main():
             projection = projection_matrix(camera_parameters, homography)
 
             # project cube or model
-            frame = render(frame, obj, projection, referenceImage, scale3d, False)
+            # frame = render(frame, obj, projection, referenceImage, scale3d, False) # version du tutoriel
+            h = 480
+            w = 640
+            # frame = proj.project_and_display_without_colors(frame, obj, projection,h,w)
+            colors = [0,1,0]
+            frame = proj.project_and_display(frame, obj, projection,colors)
 
             # ===================== Display ====================
 

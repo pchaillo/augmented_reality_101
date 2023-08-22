@@ -101,10 +101,14 @@ def projection_matrix(camera_parameters, homography):
     )
     rot_3 = np.cross(rot_1, rot_2)
 
+    print("Rotation1 :")
+    print(rot_1)
+
     # Compute the 3D projection matrix from the model to the current frame
     projection = np.stack((rot_1, rot_2, rot_3, translation)).T
 
-    return np.dot(camera_parameters, projection)
+    # return np.dot(camera_parameters, projection) # version du tutoriel
+    return (camera_parameters @ projection) # version tinhinane
 
 
 def render(frame, obj, projection, referenceImage, scale3d, color=False):
@@ -143,7 +147,7 @@ def main():
 
     # Matrix of camera parameters
     # camera_parameters = np.array([[800, 0, 320], [0, 800, 240], [0, 0, 1]]) # valeur du tutoriel
-    camera_parameters = np.array([
+    camera_parameters = np.array([ # matrice intrinsèque de la camera realsense
     [382.43677, 0,319.68753],
     [0, 382.43677, 240.88152],
     [0, 0, 1] ] )
@@ -221,7 +225,11 @@ def main():
             # ================= Pose Estimation ================
 
             # obtain 3D projection matrix from homography matrix and camera parameters
-            projection = projection_matrix(camera_parameters, homography)
+            projection = projection_matrix(camera_parameters, homography) # version du tutoriel
+            # projection = camera_parameters @ homography # version Tinhinane
+
+            # print(projection)
+
 
             # project cube or model
             # frame = render(frame, obj, projection, referenceImage, scale3d, False) # version du tutoriel
